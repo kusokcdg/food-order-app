@@ -249,6 +249,19 @@ h1 {
   background-color: rgba(0, 0, 0, 0.55);
 }
 
+.control-error {
+  font-size: 0.8rem;
+  height: 2rem;
+  padding: 0.5rem 0;
+}
+
+.process-fetch {
+  font-size: 1.5rem;
+  max-width: 40rem;
+  margin: 1rem auto;
+  padding: 1rem;
+}
+
 @keyframes fade-slide-up {
   from {
     opacity: 0;

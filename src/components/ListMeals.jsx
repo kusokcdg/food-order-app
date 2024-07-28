@@ -1,46 +1,21 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+
+import Meal from "./Meal.jsx";
+import { MealsContext } from "../store/initial-meals-context";
 
 const ListMeals = () => {
-  const [meals, setMeals] = useState([]);
-  const [isFetching, setIsFetching] = useState(false);
-  const [errorFetch, setErrorFetch] = useState(false);
+  const { meals, errorFetch, isFetching } = useContext(MealsContext);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsFetching(true);
-      try {
-        const response = await fetch('http://localhost:3000/meals');
-        const resData = await response.json();
-
-        if (!response.ok) { throw Error('Failde fetch meals') }
-        setMeals(resData);
-      } catch (error) {
-        setErrorFetch(error)
-      }
-      setIsFetching(false);
-    }
-
-    fetchData();
-  }, [])
-
-  if (errorFetch) { return <div>Error fetching data</div> }
+  if (!!errorFetch) { return <div className="process-fetch">{errorFetch.message}</div> }
   return (
     <>
-      {isFetching && <div>Data is fetching...</div>}
+      {isFetching && <div className="process-fetch">Data is fetching...</div>}
       {!isFetching && (
         <div id="meals">
           {
             meals.map(meal =>
-              <div key={`${meal.id}`} className="meal-item">
-                <article>
-                  <img src={`http://localhost:3000/${meal.image}`} alt={meal.name} />
-                  <h3>{meal.name}</h3>
-                  <div className="meal-item-price">{meal.price}</div>
-                  <div className="meal-item-description">{meal.description}</div>
-                  <div className="meal-item-actions">
-                    <button className="button">Add to Cart</button>
-                  </div>
-                </article>
+              <div key={`${meal.id}`}>
+                <Meal {...meal} />
               </div>
             )
           }
